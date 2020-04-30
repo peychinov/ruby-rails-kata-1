@@ -1,14 +1,20 @@
 class PublicationsController < ApplicationController
   before_action :set_publication, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_direction
 
   # GET /publications
   # GET /publications.json
   def index
     @publications = Publication.all
+
     @search = params["search"]
     if @search.present?
       @isbn = @search["isbn"]
       @publications = Publication.where(isbn: @isbn)
+    end
+
+    if params[:sort] == 'title'
+      @publications = @publications.order("title #{sort_direction}")
     end
   end
 
@@ -86,5 +92,9 @@ class PublicationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def publication_params
       params.require(:publication).permit(:title, :isbn, :description, :published_at)
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
     end
 end
