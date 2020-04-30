@@ -2,14 +2,9 @@
 
 <h1>Publications</h1>
 
-<%= search_form_for @q do |f| %>
-  Search by ISBN
-  <%= f.search_field :isbn %>
-
-  Search by authors' emails
-  <%= f.search_field :authors_email_cont %>
-
-  <%= f.submit %>
+<%= simple_form_for :search, url: publications_path, method: "GET", html: { class: 'form-inline' } do |f| %>
+  <%= f.input :isbn, input_html: {value: ""} %>
+  <%= f.submit "Search", class: "btn btn-primary" %>
 <% end %>
 
 <h3>Import</h3>
@@ -17,11 +12,11 @@
   <%= file_field_tag :file %>
   <%= submit_tag 'Import CSV' %>
 <% end -%>
-
+<br>
 <table>
   <thead>
     <tr>
-      <th><%= sort_link(@q, :title) %></th>
+      <th>Title</th>
       <th>Isbn</th>
       <th>Description</th>
       <th>Published at</th>

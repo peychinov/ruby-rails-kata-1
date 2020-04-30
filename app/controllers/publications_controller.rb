@@ -4,8 +4,12 @@ class PublicationsController < ApplicationController
   # GET /publications
   # GET /publications.json
   def index
-    @q = Publication.ransack params[:q]
-    @publications = @q.result.includes(:authors)
+    @publications = Publication.all
+    @search = params["search"]
+    if @search.present?
+      @isbn = @search["isbn"]
+      @publications = Publication.where(isbn: @isbn)
+    end
   end
 
   # GET /publications/1
