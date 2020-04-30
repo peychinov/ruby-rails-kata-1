@@ -4,7 +4,8 @@ class PublicationsController < ApplicationController
   # GET /publications
   # GET /publications.json
   def index
-    @publications = Publication.all
+    @q = Publication.ransack params[:q]
+    @publications = @q.result.includes(:authors)
   end
 
   # GET /publications/1
@@ -59,6 +60,17 @@ class PublicationsController < ApplicationController
       format.html { redirect_to publications_url, notice: 'Publication was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def search
+    @publication = Publication.find_by isbn: params[:isbn]
+    render :show
+  end
+
+  def import
+    Publication.import params[:file]
+
+    redirect_to publications_url, notice: 'CSV imported!'
   end
 
   private

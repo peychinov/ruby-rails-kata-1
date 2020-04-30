@@ -61,6 +61,12 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def import
+    Author.import params[:file]
+
+    redirect_to authors_url, notice: 'CSV imported!'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_author

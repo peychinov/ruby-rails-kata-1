@@ -1,5 +1,11 @@
 <p id="notice"><%= notice %></p>
 
+<h3>Import</h3>
+<%= form_tag import_authors_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag 'Import CSV' %>
+<% end -%>
+
 <h1>Authors</h1>
 
 <table>
